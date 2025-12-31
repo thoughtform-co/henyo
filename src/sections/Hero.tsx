@@ -16,7 +16,7 @@ export function Hero({ reelVisible }: HeroProps) {
         }}
       >
         <p
-          className="max-w-[300px] text-[15px] leading-[1.5] text-[#666666] md:max-w-[460px] md:text-[17px]"
+          className="max-w-[340px] text-[18px] leading-[1.4] text-[#666666] md:max-w-[540px] md:text-[22px]"
           style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: 400 }}
         >
           Henyo Digital is a creative production studio blending CGI, AI, and human craft for digital campaigns.
