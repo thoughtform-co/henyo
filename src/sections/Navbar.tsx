@@ -10,10 +10,10 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'overview', isLogo: true },
-  { label: 'Services', id: 'services', isLogo: false },
-  { label: 'Process', id: 'how-we-work', isLogo: false },
-  { label: 'Work', id: 'use-cases', isLogo: false },
+  { label: 'OVERVIEW', id: 'overview' },
+  { label: 'SERVICES', id: 'services' },
+  { label: 'HOW WE WORK', id: 'how-we-work' },
+  { label: 'USE CASES', id: 'use-cases' },
 ] as const;
 
 export function Navbar({ isScrolled, activeSection, isVisible, onNavigate }: NavbarProps) {
@@ -50,7 +50,7 @@ export function Navbar({ isScrolled, activeSection, isVisible, onNavigate }: Nav
 
           {/* Center - Navigation items */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-8">
-            {NAV_ITEMS.filter(item => !item.isLogo).map((item, index) => (
+            {NAV_ITEMS.map((item, index) => (
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
@@ -60,10 +60,10 @@ export function Navbar({ isScrolled, activeSection, isVisible, onNavigate }: Nav
                     : 'text-[#666666] hover:text-black'
                 }`}
                 style={{
-                  fontFamily: 'Founders Grotesk, Inter',
+                  fontFamily: "'Founders Grotesk', sans-serif",
                   fontWeight: '500',
-                  fontSize: '15px',
-                  letterSpacing: '0.01em',
+                  fontSize: '13px',
+                  letterSpacing: '0.08em',
                   textDecoration: activeSection === item.id ? 'underline' : 'none',
                   textUnderlineOffset: '4px',
                   opacity: isVisible ? 1 : 0,

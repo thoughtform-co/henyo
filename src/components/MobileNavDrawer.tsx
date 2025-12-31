@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 
 const NAV_ITEMS = [
   { label: 'OVERVIEW', id: 'overview' },
-  { label: 'HOW WE WORK', id: 'how-we-work' },
   { label: 'SERVICES', id: 'services' },
+  { label: 'HOW WE WORK', id: 'how-we-work' },
   { label: 'USE CASES', id: 'use-cases' },
 ] as const;
 

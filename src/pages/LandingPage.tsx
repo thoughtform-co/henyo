@@ -4,7 +4,6 @@ import {
   PageLoader,
   Hero,
   Editorial,
-  SocialProof,
   UseCases,
   CaseOverlay,
   Footer,
@@ -30,7 +29,6 @@ export function LandingPage() {
 
   // Hero animation states
   const [reelVisible, setReelVisible] = useState(false);
-  const [carouselVisible, setCarouselVisible] = useState(false);
 
   // Editorial text color animation
   const [editorialTextColor, setEditorialTextColor] = useState('#888888');
@@ -63,7 +61,6 @@ export function LandingPage() {
       setLoaderComplete(true);
       setNavbarIntroVisible(true);
       setReelVisible(true);
-      setCarouselVisible(true);
     }, 800);
     // Remove loader from DOM after animation completes
     const hideTimer = setTimeout(() => setLoaderActive(false), 1000);
@@ -255,9 +252,6 @@ export function LandingPage() {
       <section ref={editorialRef as React.RefObject<HTMLElement>}>
         <Editorial isVisible={loaderComplete} textColor={editorialTextColor} />
       </section>
-
-      {/* Social Proof - Client Logos */}
-      <SocialProof isVisible={carouselVisible} />
 
       {/* SERVICES Chapter */}
       {loaderComplete && (
