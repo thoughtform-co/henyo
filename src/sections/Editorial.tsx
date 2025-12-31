@@ -4,7 +4,7 @@ interface EditorialProps {
 }
 
 const EDITORIAL_TEXT =
-  'Henyo is a creative production studio combining creative direction, hybrid AI workflows, CGI, and post-production into a clear, structured production system. We work closely with in-house teams and agencies to deliver digital campaigns and always-on content, maintaining full visibility and control from brief through approved delivery.';
+  'From brief to final delivery, we bring structure and craft to digital production. Clear timelines, predictable revisions, and premium output—working closely with brands and agencies who need quality at scale.';
 
 export function Editorial({ isVisible, textColor }: EditorialProps) {
   return (
