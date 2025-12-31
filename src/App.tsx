@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+  
 // Lazy load pages for code splitting
 const LandingPage = lazy(() =>
   import('@/pages/LandingPage').then((module) => ({ default: module.LandingPage }))
@@ -10,23 +10,23 @@ const LandingPage = lazy(() =>
 // const WorkPage = lazy(() => import('@/pages/WorkPage'));
 // const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
 // const UseCasePage = lazy(() => import('@/pages/UseCasePage'));
-
+      
 /**
  * Loading fallback component
  */
 function PageLoader() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      <p
+            <p
         className="text-[#888888]"
               style={{ 
                 fontFamily: "'Founders Grotesk', sans-serif",
                 fontWeight: 400,
           fontSize: 'clamp(18px, 2.5vw, 24px)',
-        }}
-      >
+            }}
+          >
         Loading...
-      </p>
+            </p>
     </div>
   );
 }

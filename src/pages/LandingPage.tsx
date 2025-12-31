@@ -3,6 +3,7 @@ import {
   Navbar,
   PageLoader,
   Hero,
+  SocialProof,
   Editorial,
   UseCases,
   CaseOverlay,
@@ -276,7 +277,10 @@ export function LandingPage() {
       />
 
       {/* OVERVIEW Chapter */}
-      <Hero reelVisible={reelVisible} carouselVisible={carouselVisible} />
+      <Hero reelVisible={reelVisible} />
+
+      {/* Social Proof - Client Logos */}
+      <SocialProof isVisible={carouselVisible} />
 
       {/* Editorial Intro Text */}
       <section ref={editorialRef as React.RefObject<HTMLElement>}>

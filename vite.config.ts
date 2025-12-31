@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import path from 'path';
+  import { defineConfig } from 'vite';
+  import react from '@vitejs/plugin-react-swc';
+  import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(({ mode }) => ({
@@ -14,9 +14,9 @@ export default defineConfig(({ mode }) => ({
         brotliSize: true,
       }),
   ].filter(Boolean),
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-    alias: {
+    resolve: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      alias: {
       // Figma asset aliases (from Figma export)
       'figma:asset/88167c2f00ce9faddf88a45b5e3da835c418cc8f.png': path.resolve(
         __dirname,
@@ -43,15 +43,15 @@ export default defineConfig(({ mode }) => ({
         './src/assets/1d09dde76892af022de27b92d7a2106c9a372801.png'
       ),
       // Path alias for imports
-      '@': path.resolve(__dirname, './src'),
+        '@': path.resolve(__dirname, './src'),
+      },
     },
-  },
-  build: {
-    target: 'esnext',
-    outDir: 'build',
-  },
-  server: {
-    port: 3000,
-    open: true,
-  },
+    build: {
+      target: 'esnext',
+      outDir: 'build',
+    },
+    server: {
+      port: 3000,
+      open: true,
+    },
 }));
