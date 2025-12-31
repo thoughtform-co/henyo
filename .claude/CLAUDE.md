@@ -55,3 +55,12 @@ npm run format       # Prettier
 - Colors: Black/white with gray accents (#888, #999)
 - Aesthetic: Minimal, editorial, premium
 
+For detailed frontend design guidance, see the **frontend-design** skill.
+
+## Skills Available
+
+| Skill | Purpose |
+|-------|---------|
+| `frontend-design` | Typography, color, motion, responsive patterns — avoid AI slop |
+| `add-use-case` | Add client case studies to the website |
+
