@@ -11,18 +11,12 @@ interface SocialProofProps {
 export function SocialProof({ isVisible }: SocialProofProps) {
   return (
     <section
-      className="w-full px-4 pb-24 md:pb-32"
+      className="w-full px-4 pb-16 md:pb-24"
       style={{
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 500ms ease-out',
       }}
     >
-      <p
-        className="mb-4 text-center text-[13px] font-normal text-black md:mb-5 md:text-[14px]"
-        style={{ fontFamily: 'Founders Grotesk', fontWeight: 400 }}
-      >
-        Our work is trusted by
-      </p>
       <div className="relative overflow-hidden">
         {/* Fade overlays */}
         <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />

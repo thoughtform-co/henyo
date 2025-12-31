@@ -10,7 +10,7 @@ export function Editorial({ isVisible, textColor }: EditorialProps) {
   return (
     <section
       id="editorial-text"
-      className="w-full px-4 py-32 md:py-48"
+      className="w-full px-4 pt-16 pb-8 md:py-48"
       style={{
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 800ms ease-out',
