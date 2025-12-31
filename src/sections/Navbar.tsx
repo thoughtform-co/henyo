@@ -10,7 +10,7 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
-  { label: 'Henyo', id: 'overview', isLogo: true },
+  { id: 'overview', isLogo: true },
   { label: 'Services', id: 'services', isLogo: false },
   { label: 'Work', id: 'use-cases', isLogo: false },
   { label: 'Process', id: 'how-we-work', isLogo: false },
@@ -48,8 +48,7 @@ export function Navbar({ isScrolled, activeSection, isVisible, onNavigate }: Nav
               }`}
               style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
             >
-              {item.isLogo && <HenyoLogo className="h-[12px] w-auto" />}
-              {item.label}
+              {item.isLogo ? <HenyoLogo className="h-[12px] w-auto" /> : item.label}
             </button>
           ))}
         </div>

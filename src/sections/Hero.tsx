@@ -1,5 +1,4 @@
 import { LazyVimeoEmbed } from '@/components/LazyVimeoEmbed';
-import HenyoLogo from '@/components/HenyoLogo';
 
 interface HeroProps {
   reelVisible: boolean;
@@ -8,20 +7,19 @@ interface HeroProps {
 export function Hero({ reelVisible }: HeroProps) {
   return (
     <section id="overview" className="relative flex min-h-[auto] flex-col items-center pt-24 pb-8 md:pt-32 md:pb-12">
-      {/* Hero Header - Logo + Description */}
+      {/* Hero Description */}
       <div
-        className="mb-8 flex flex-col items-center px-6 text-center md:mb-12"
+        className="mb-8 px-6 text-center md:mb-12"
         style={{
           opacity: reelVisible ? 1 : 0,
           transition: 'opacity 800ms ease-out',
         }}
       >
-        <HenyoLogo className="mb-6 h-[20px] w-auto text-black md:mb-8 md:h-[28px]" />
         <p
-          className="max-w-[280px] text-[15px] leading-[1.5] text-[#666666] md:max-w-[400px] md:text-[17px]"
+          className="max-w-[300px] text-[15px] leading-[1.5] text-[#666666] md:max-w-[460px] md:text-[17px]"
           style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: 400 }}
         >
-          Creative production studio for digital campaigns and always-on content.
+          Henyo Digital is a creative production studio for digital campaigns and always-on content.
         </p>
       </div>
 
