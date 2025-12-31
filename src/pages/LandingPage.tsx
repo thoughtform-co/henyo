@@ -50,10 +50,6 @@ export function LandingPage() {
   // HOW WE WORK slide state
   const [activeStep, setActiveStep] = useState(0);
 
-  // SERVICES slide state
-  const [activeService, setActiveService] = useState(0);
-  const [servicesPaused, setServicesPaused] = useState(false);
-
   // Use Cases overlay state
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [selectedCaseIndex, setSelectedCaseIndex] = useState(0);
@@ -193,14 +189,6 @@ export function LandingPage() {
     setActiveStep((prev) => (prev + 1) % 5);
   }, 4000);
 
-  // Auto-advance for SERVICES slides
-  useInterval(
-    () => {
-      setActiveService((prev) => (prev + 1) % 2);
-    },
-    servicesPaused ? null : 10000
-  );
-
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -226,30 +214,10 @@ export function LandingPage() {
     }
   }, []);
 
-  const pauseServicesAutoAdvance = useCallback(() => {
-    setServicesPaused(true);
-    setTimeout(() => setServicesPaused(false), 30000);
-  }, []);
-
   const handleStepChange = useCallback((index: number) => setActiveStep(index), []);
   const handleNextStep = useCallback(() => setActiveStep((prev) => (prev + 1) % 5), []);
   const handlePrevStep = useCallback(() => setActiveStep((prev) => (prev - 1 + 5) % 5), []);
 
-  const handleServiceChange = useCallback(
-    (index: number) => {
-      setActiveService(index);
-      pauseServicesAutoAdvance();
-    },
-    [pauseServicesAutoAdvance]
-  );
-  const handleNextService = useCallback(() => {
-    setActiveService((prev) => (prev + 1) % 2);
-    pauseServicesAutoAdvance();
-  }, [pauseServicesAutoAdvance]);
-  const handlePrevService = useCallback(() => {
-    setActiveService((prev) => (prev - 1 + 2) % 2);
-    pauseServicesAutoAdvance();
-  }, [pauseServicesAutoAdvance]);
 
   const handleOpenCase = useCallback((index: number) => {
     setSelectedCaseIndex(index);
@@ -304,12 +272,7 @@ export function LandingPage() {
           }}
         >
           <div className="w-full">
-            <ServicesSlides
-              activeService={activeService}
-              onServiceChange={handleServiceChange}
-              onNext={handleNextService}
-              onPrev={handlePrevService}
-            />
+            <ServicesSlides isVisible={servicesVisible} />
           </div>
         </section>
       )}

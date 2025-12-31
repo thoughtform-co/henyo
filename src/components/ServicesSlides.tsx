@@ -1,10 +1,12 @@
-import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { useState } from 'react';
+import { Download } from 'lucide-react';
+import { LazyBackgroundVideo } from './LazyVimeoEmbed';
 
-interface ServiceSlide {
+interface Service {
   id: string;
   title: string;
   description: string;
-  videoUrl: string;
+  videoId: string;
   characteristics: {
     duration: string;
     cadence: string;
@@ -12,12 +14,12 @@ interface ServiceSlide {
   };
 }
 
-const services: ServiceSlide[] = [
+const services: Service[] = [
   {
     id: 'digital-campaigns',
     title: 'DIGITAL CAMPAIGNS',
     description: 'High-impact creative for launch moments, seasonal drops, and brand storytelling. Built for platforms, optimized for performance.',
-    videoUrl: 'https://player.vimeo.com/video/1132109893?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1&background=1',
+    videoId: '1132109893',
     characteristics: {
       duration: '2-6 weeks per campaign',
       cadence: 'Project-based, seasonal',
@@ -28,7 +30,7 @@ const services: ServiceSlide[] = [
     id: 'always-on',
     title: 'ALWAYS-ON CONTENT',
     description: 'Continuous content production for social feeds, product launches, and brand presence. Consistent quality, scalable volume.',
-    videoUrl: 'https://player.vimeo.com/video/1135858265?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1&background=1',
+    videoId: '1135858265',
     characteristics: {
       duration: 'Monthly retainer or quarterly sprints',
       cadence: 'Weekly or bi-weekly deliveries',
@@ -38,13 +40,11 @@ const services: ServiceSlide[] = [
 ];
 
 interface ServicesSlidesProps {
-  activeService: number;
-  onServiceChange: (index: number) => void;
-  onNext: () => void;
-  onPrev: () => void;
+  isVisible?: boolean;
 }
 
-export function ServicesSlides({ activeService, onServiceChange, onNext, onPrev }: ServicesSlidesProps) {
+export function ServicesSlides({ isVisible = true }: ServicesSlidesProps) {
+  const [hoveredPanel, setHoveredPanel] = useState<number | null>(null);
   return (
     <>
       {/* Section Label */}
@@ -55,307 +55,248 @@ export function ServicesSlides({ activeService, onServiceChange, onNext, onPrev 
         SERVICES
       </p>
 
-      {/* Mobile Layout */}
-      <div className="block md:hidden w-full max-w-[680px] mx-auto px-4">
-        {/* Service Toggle */}
-        <div className="flex items-center justify-center gap-3 mb-12">
+      {/* Mobile Layout - Stacked */}
+      <div className="block md:hidden w-full max-w-[680px] mx-auto px-4 space-y-8">
+        {services.map((service, index) => (
+          <ServicePanel
+            key={service.id}
+            service={service}
+            index={index}
+            isMobile={true}
+            isVisible={isVisible}
+          />
+        ))}
+      </div>
+
+      {/* Desktop Layout - Split View */}
+      <div className="hidden md:block w-full px-8 lg:px-12">
+        <div className="flex gap-0 min-h-[80vh]">
           {services.map((service, index) => (
-            <button
+            <ServicePanel
               key={service.id}
-              onClick={() => onServiceChange(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                activeService === index ? 'bg-black w-16' : 'bg-[#CCCCCC] w-2'
-              }`}
-              aria-label={service.title}
+              service={service}
+              index={index}
+              isMobile={false}
+              isHovered={hoveredPanel === index}
+              onMouseEnter={() => setHoveredPanel(index)}
+              onMouseLeave={() => setHoveredPanel(null)}
+              isVisible={isVisible}
             />
           ))}
         </div>
-
-        {/* Slides Container */}
-        <div className="relative">
-          {services.map((service, index) => (
-            <div
-              key={service.id}
-              className={`transition-opacity duration-700 ${
-                activeService === index ? 'opacity-100 relative' : 'opacity-0 absolute inset-0 pointer-events-none'
-              }`}
-            >
-              {/* Service Title */}
-              <h3 
-                className="text-[32px] mb-4 leading-[1.15] text-center"
-                style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500', letterSpacing: '-0.01em' }}
-              >
-                {service.title}
-              </h3>
-
-              {/* Video Preview */}
-              <div className="mb-6">
-                <div className="rounded-[12px] overflow-hidden bg-black relative" style={{ aspectRatio: '16/9' }}>
-                  <iframe
-                    src={service.videoUrl}
-                    className="absolute inset-0 w-full h-full"
-                    style={{ border: 0 }}
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-                    title={service.title}
-                  />
-                </div>
-              </div>
-
-              {/* Description */}
-              <p 
-                className="text-[15px] text-[#666666] leading-[1.6] mb-6 text-center" 
-                style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '400' }}
-              >
-                {service.description}
-              </p>
-
-              {/* Characteristics */}
-              <div className="space-y-3 mb-8">
-                <div className="flex items-start gap-3 justify-center">
-                  <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
-                  <p 
-                    className="text-[14px] text-[#666666]"
-                    style={{ fontFamily: 'Founders Grotesk, Inter' }}
-                  >
-                    <span className="text-black">Duration:</span> {service.characteristics.duration}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3 justify-center">
-                  <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
-                  <p 
-                    className="text-[14px] text-[#666666]"
-                    style={{ fontFamily: 'Founders Grotesk, Inter' }}
-                  >
-                    <span className="text-black">Cadence:</span> {service.characteristics.cadence}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3 justify-center">
-                  <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
-                  <p 
-                    className="text-[14px] text-[#666666]"
-                    style={{ fontFamily: 'Founders Grotesk, Inter' }}
-                  >
-                    <span className="text-black">Deliverables:</span> {service.characteristics.deliverables}
-                  </p>
-                </div>
-              </div>
-
-              {/* Download Button */}
-              <div className="flex justify-center">
-                <button 
-                  className="group flex items-center gap-2.5 border border-black/10 rounded-full px-6 h-[48px] hover:bg-black hover:text-white transition-all duration-300"
-                  style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="text-[14px] tracking-[0.05em] uppercase">
-                    Download Pricing
-                  </span>
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation Controls */}
-        <div className="flex items-center justify-center gap-6 mt-12">
-          <button
-            onClick={onPrev}
-            className="text-[#DDDDDD] hover:text-black transition-colors p-1"
-            aria-label="Previous service"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          <div className="flex items-center gap-2">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => onServiceChange(index)}
-                className={`w-1 h-1 rounded-full transition-all duration-300 ${
-                  activeService === index ? 'bg-black w-4' : 'bg-[#DDDDDD]'
-                }`}
-                aria-label={`Go to service ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={onNext}
-            className="text-[#DDDDDD] hover:text-black transition-colors p-1"
-            aria-label="Next service"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Desktop Layout */}
-      <div className="hidden md:block w-full px-12">
-        {/* Service Toggle - Top Left aligned with logo */}
-        <div className="flex items-start mb-16">
-          <div className="space-y-6">
-            {services.map((service, index) => (
-              <button
-                key={service.id}
-                onClick={() => onServiceChange(index)}
-                className="flex items-center gap-4 transition-all"
-              >
-                <div className="relative">
-                  <div 
-                    className={`w-3 h-3 rounded-full border transition-all duration-300 ${
-                      activeService === index 
-                        ? 'bg-black border-black scale-150' 
-                        : 'bg-white border-black/20'
-                    }`}
-                  />
-                  {index < services.length - 1 && (
-                    <div 
-                      className={`absolute top-3 left-[5.5px] w-[1px] h-6 transition-colors duration-300 ${
-                        activeService > index ? 'bg-[#666666]' : 'bg-black/10'
-                      }`}
-                    />
-                  )}
-                </div>
-                <span 
-                  className={`text-[13px] tracking-[0.08em] uppercase transition-colors duration-300 whitespace-nowrap ${
-                    activeService === index ? 'text-black' : 'text-[#CCCCCC]'
-                  }`}
-                  style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
-                >
-                  {service.title}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Content Below - Video Left, Copy Right */}
-        <div className="flex items-start gap-20">
-          {/* Left: Video - 55vw width (10% bigger) */}
-          <div className="flex-shrink-0 relative" style={{ width: '55vw' }}>
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                className={`transition-opacity duration-700 ${
-                  activeService === index ? 'opacity-100 relative' : 'opacity-0 absolute inset-0 pointer-events-none'
-                }`}
-              >
-                <div className="rounded-[20px] overflow-hidden bg-black relative" style={{ aspectRatio: '16/9' }}>
-                  <iframe
-                    src={service.videoUrl}
-                    className="absolute inset-0 w-full h-full"
-                    style={{ border: 0 }}
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-                    title={service.title}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Right: Copy and Button */}
-          <div className="flex-1 pt-2" style={{ maxWidth: '500px' }}>
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                className={`transition-opacity duration-700 ${
-                  activeService === index ? 'opacity-100 relative' : 'opacity-0 absolute pointer-events-none'
-                }`}
-              >
-                {/* Service Title */}
-                <h3 
-                  className="text-[46px] mb-6 leading-[1.1]"
-                  style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500', letterSpacing: '-0.01em' }}
-                >
-                  {service.title}
-                </h3>
-
-                {/* Description */}
-                <p 
-                  className="text-[17px] text-[#666666] leading-[1.6] mb-10" 
-                  style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '400' }}
-                >
-                  {service.description}
-                </p>
-
-                {/* Characteristics */}
-                <div className="space-y-4 mb-12">
-                  <div className="flex items-start gap-3">
-                    <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
-                    <p 
-                      className="text-[15px] text-[#666666]"
-                      style={{ fontFamily: 'Founders Grotesk, Inter' }}
-                    >
-                      <span className="text-black">Duration:</span> {service.characteristics.duration}
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
-                    <p 
-                      className="text-[15px] text-[#666666]"
-                      style={{ fontFamily: 'Founders Grotesk, Inter' }}
-                    >
-                      <span className="text-black">Cadence:</span> {service.characteristics.cadence}
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
-                    <p 
-                      className="text-[15px] text-[#666666]"
-                      style={{ fontFamily: 'Founders Grotesk, Inter' }}
-                    >
-                      <span className="text-black">Deliverables:</span> {service.characteristics.deliverables}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Download Button */}
-                <button 
-                  className="group flex items-center gap-2.5 border border-black/10 rounded-full px-6 h-[48px] hover:bg-black hover:text-white transition-all duration-300"
-                  style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="text-[14px] tracking-[0.05em] uppercase">
-                    Download Pricing
-                  </span>
-                </button>
-              </div>
-            ))}
-
-            {/* Navigation Controls - Desktop */}
-            <div className="flex items-center gap-5 mt-12">
-              <button
-                onClick={onPrev}
-                className="text-[#DDDDDD] hover:text-black transition-colors p-1"
-                aria-label="Previous service"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              <div className="flex items-center gap-2">
-                {services.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => onServiceChange(index)}
-                    className={`w-1 h-1 rounded-full transition-all duration-300 ${
-                      activeService === index ? 'bg-black w-4' : 'bg-[#DDDDDD]'
-                    }`}
-                    aria-label={`Go to service ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={onNext}
-                className="text-[#DDDDDD] hover:text-black transition-colors p-1"
-                aria-label="Next service"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </>
+  );
+}
+
+interface ServicePanelProps {
+  service: Service;
+  index: number;
+  isMobile: boolean;
+  isHovered?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  isVisible?: boolean;
+}
+
+function ServicePanel({
+  service,
+  index,
+  isMobile,
+  isHovered = false,
+  onMouseEnter,
+  onMouseLeave,
+  isVisible = true,
+}: ServicePanelProps) {
+  const animationDelay = index * 150; // Staggered entrance
+
+  if (isMobile) {
+    return (
+      <div
+        className="relative rounded-[16px] overflow-hidden bg-black"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: `opacity 800ms ease-out ${animationDelay}ms, transform 800ms ease-out ${animationDelay}ms`,
+        }}
+      >
+        {/* Video Background */}
+        <div className="relative w-full" style={{ aspectRatio: '16/9', minHeight: '300px' }}>
+          <LazyBackgroundVideo
+            videoId={service.videoId}
+            className="absolute inset-0"
+            rootMargin="100px"
+          />
+          
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+            {/* Title */}
+            <h3 
+              className="text-[40px] mb-3 leading-[1.1] text-white"
+              style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500', letterSpacing: '-0.01em' }}
+            >
+              {service.title}
+            </h3>
+
+            {/* Description */}
+            <p 
+              className="text-[15px] text-white/90 leading-[1.6] mb-4" 
+              style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '400' }}
+            >
+              {service.description}
+            </p>
+
+            {/* Characteristics */}
+            <div className="space-y-2 mb-6">
+              <div className="flex items-start gap-2">
+                <div className="w-1 h-1 rounded-full bg-white mt-2.5 flex-shrink-0" />
+                <p 
+                  className="text-[13px] text-white/80"
+                  style={{ fontFamily: 'Founders Grotesk, Inter' }}
+                >
+                  <span className="text-white font-medium">Duration:</span> {service.characteristics.duration}
+                </p>
+              </div>
+              <div className="flex items-start gap-2">
+                <div className="w-1 h-1 rounded-full bg-white mt-2.5 flex-shrink-0" />
+                <p 
+                  className="text-[13px] text-white/80"
+                  style={{ fontFamily: 'Founders Grotesk, Inter' }}
+                >
+                  <span className="text-white font-medium">Cadence:</span> {service.characteristics.cadence}
+                </p>
+              </div>
+              <div className="flex items-start gap-2">
+                <div className="w-1 h-1 rounded-full bg-white mt-2.5 flex-shrink-0" />
+                <p 
+                  className="text-[13px] text-white/80"
+                  style={{ fontFamily: 'Founders Grotesk, Inter' }}
+                >
+                  <span className="text-white font-medium">Deliverables:</span> {service.characteristics.deliverables}
+                </p>
+              </div>
+            </div>
+
+            {/* Download Button */}
+            <button 
+              className="group flex items-center gap-2.5 border border-white/30 rounded-full px-6 h-[48px] bg-white/10 backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300 text-white self-start"
+              style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
+            >
+              <Download className="w-4 h-4" />
+              <span className="text-[14px] tracking-[0.05em] uppercase">
+                Download Pricing
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop split view
+  return (
+    <div
+      className="relative flex-1 overflow-hidden transition-all duration-500 ease-out cursor-pointer"
+      style={{
+        flex: isHovered ? '1.2' : '0.8',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible 
+          ? `translateX(0) scale(${isHovered ? 1.02 : 1})` 
+          : `translateX(${index === 0 ? '-20px' : '20px'}) scale(0.98)`,
+        transition: `flex 500ms ease-out, opacity 800ms ease-out ${animationDelay}ms, transform 800ms ease-out ${animationDelay}ms`,
+      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {/* Video Background - Full Bleed */}
+      <div className="absolute inset-0">
+        <LazyBackgroundVideo
+          videoId={service.videoId}
+          className="absolute inset-0"
+          style={{ 
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+            transition: 'transform 500ms ease-out',
+          }}
+          rootMargin="200px"
+        />
+      </div>
+
+      {/* Dark Overlay - Adjusts on hover */}
+      <div 
+        className="absolute inset-0 bg-black/40 transition-opacity duration-500"
+        style={{
+          opacity: isHovered ? 0.2 : 0.5,
+        }}
+      />
+
+      {/* Content Overlay - Glassmorphic */}
+      <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-12">
+        <div 
+          className="bg-white/90 backdrop-blur-md rounded-[20px] p-8 lg:p-10 max-w-[520px] transition-all duration-500"
+          style={{
+            transform: isHovered ? 'translateY(0)' : 'translateY(10px)',
+            opacity: isHovered ? 1 : 0.95,
+          }}
+        >
+          {/* Title - Dramatic Typography */}
+          <h3 
+            className="text-[56px] lg:text-[64px] mb-6 leading-[1.05] text-black"
+            style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500', letterSpacing: '-0.02em' }}
+          >
+            {service.title}
+          </h3>
+
+          {/* Description */}
+          <p 
+            className="text-[17px] lg:text-[18px] text-[#666666] leading-[1.6] mb-8" 
+            style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '400' }}
+          >
+            {service.description}
+          </p>
+
+          {/* Characteristics */}
+          <div className="space-y-3 mb-8">
+            <div className="flex items-start gap-3">
+              <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
+              <p 
+                className="text-[15px] text-[#666666]"
+                style={{ fontFamily: 'Founders Grotesk, Inter' }}
+              >
+                <span className="text-black font-medium">Duration:</span> {service.characteristics.duration}
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
+              <p 
+                className="text-[15px] text-[#666666]"
+                style={{ fontFamily: 'Founders Grotesk, Inter' }}
+              >
+                <span className="text-black font-medium">Cadence:</span> {service.characteristics.cadence}
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-1 h-1 rounded-full bg-black mt-2.5 flex-shrink-0" />
+              <p 
+                className="text-[15px] text-[#666666]"
+                style={{ fontFamily: 'Founders Grotesk, Inter' }}
+              >
+                <span className="text-black font-medium">Deliverables:</span> {service.characteristics.deliverables}
+              </p>
+            </div>
+          </div>
+
+          {/* Download Button */}
+          <button 
+            className="group flex items-center gap-2.5 border border-black/10 rounded-full px-6 h-[48px] hover:bg-black hover:text-white transition-all duration-300"
+            style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
+          >
+            <Download className="w-4 h-4" />
+            <span className="text-[14px] tracking-[0.05em] uppercase">
+              Download Pricing
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
