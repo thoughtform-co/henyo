@@ -7,18 +7,18 @@ interface HeroProps {
 
 export function Hero({ reelVisible }: HeroProps) {
   return (
-    <section id="overview" className="relative flex min-h-[auto] flex-col items-center pt-24 pb-8 md:h-screen md:justify-center md:pt-0 md:pb-0">
-      {/* Mobile Hero Header - Logo + Description */}
+    <section id="overview" className="relative flex min-h-[auto] flex-col items-center pt-24 pb-8 md:pt-32 md:pb-12">
+      {/* Hero Header - Logo + Description */}
       <div
-        className="mb-8 flex flex-col items-center px-6 text-center md:hidden"
+        className="mb-8 flex flex-col items-center px-6 text-center md:mb-12"
         style={{
           opacity: reelVisible ? 1 : 0,
           transition: 'opacity 800ms ease-out',
         }}
       >
-        <HenyoLogo className="mb-6 h-[20px] w-auto text-black" />
+        <HenyoLogo className="mb-6 h-[20px] w-auto text-black md:mb-8 md:h-[28px]" />
         <p
-          className="max-w-[280px] text-[15px] leading-[1.5] text-[#666666]"
+          className="max-w-[280px] text-[15px] leading-[1.5] text-[#666666] md:max-w-[400px] md:text-[17px]"
           style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: 400 }}
         >
           Creative production studio for digital campaigns and always-on content.
