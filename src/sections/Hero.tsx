@@ -12,7 +12,7 @@ interface HeroProps {
 
 export function Hero({ reelVisible, carouselVisible }: HeroProps) {
   return (
-    <section id="overview" className="relative flex h-screen flex-col items-center justify-center">
+    <section id="overview" className="relative flex h-[85vh] flex-col items-center justify-center md:h-screen">
       {/* Hero Reel - Centered in viewport */}
       <div
         id="reel"
