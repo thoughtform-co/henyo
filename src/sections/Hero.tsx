@@ -6,7 +6,7 @@ interface HeroProps {
 
 export function Hero({ reelVisible }: HeroProps) {
   return (
-    <section id="overview" className="relative flex h-[70vh] flex-col items-center justify-center md:h-[85vh]">
+    <section id="overview" className="relative flex h-[85vh] flex-col items-center justify-center md:h-screen">
       {/* Hero Reel - Centered in viewport */}
       <div
         id="reel"
@@ -29,3 +29,4 @@ export function Hero({ reelVisible }: HeroProps) {
     </section>
   );
 }
+

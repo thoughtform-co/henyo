@@ -11,7 +11,7 @@ interface SocialProofProps {
 export function SocialProof({ isVisible }: SocialProofProps) {
   return (
     <section
-      className="w-full py-12 md:py-16"
+      className="w-full px-4 pb-24 md:pb-32"
       style={{
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 500ms ease-out',
@@ -23,7 +23,7 @@ export function SocialProof({ isVisible }: SocialProofProps) {
       >
         Our work is trusted by
       </p>
-      <div className="relative overflow-hidden px-4 md:px-8">
+      <div className="relative overflow-hidden">
         {/* Fade overlays */}
         <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
         <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-24 bg-gradient-to-l from-white to-transparent md:w-40" />
