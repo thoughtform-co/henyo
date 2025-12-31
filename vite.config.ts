@@ -51,7 +51,8 @@ export default defineConfig(({ mode }) => ({
       outDir: 'build',
     },
     server: {
-      port: 3000,
+      port: 3080, // Unique port for Henyo project
+      strictPort: true, // Fail if port is taken (don't auto-increment)
       open: true,
     },
 }));

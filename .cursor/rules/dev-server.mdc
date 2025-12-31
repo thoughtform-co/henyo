@@ -1,0 +1,57 @@
+---
+description: Development server configuration for multi-project workflows
+globs: ["vite.config.ts", "package.json"]
+alwaysApply: false
+---
+
+# Development Server Configuration
+
+## Port Assignment
+
+This project uses **port 3080** for local development. Each Thoughtform project should have a unique port to avoid conflicts when running multiple dev servers in parallel.
+
+### Port Registry (Thoughtform Projects)
+
+| Project | Port | URL |
+|---------|------|-----|
+| Henyo | 3080 | http://localhost:3080 |
+| Atlas | 3081 | http://localhost:3081 |
+| Ledger | 3082 | http://localhost:3082 |
+| Astrolabe | 3083 | http://localhost:3083 |
+| Thoughtform.co | 3084 | http://localhost:3084 |
+
+## Configuration Requirements
+
+When configuring `vite.config.ts`, always include:
+
+```typescript
+server: {
+  port: 3080, // Project-specific port
+  strictPort: true, // IMPORTANT: Fail if port is taken
+  open: true,
+},
+```
+
+### Why `strictPort: true`?
+
+Without `strictPort`, Vite will silently use the next available port (3001, 3002, etc.) when the configured port is taken. This causes confusion because:
+1. Browser tabs from other projects may still be open
+2. You might be editing one project while viewing another
+3. HMR updates go to the wrong browser tab
+
+With `strictPort: true`, Vite will **fail immediately** if the port is taken, alerting you that another server is already running.
+
+## Troubleshooting
+
+If you see "Port 3080 is already in use":
+
+1. Check if this project's dev server is already running in another terminal
+2. Kill the existing process: `npx kill-port 3080`
+3. Or find what's using it: `netstat -ano | findstr :3080` (Windows)
+
+## Running the Dev Server
+
+```bash
+npm run dev
+# Opens http://localhost:3080
+```
