@@ -11,13 +11,13 @@ interface SocialProofProps {
 export function SocialProof({ isVisible }: SocialProofProps) {
   return (
     <section
-      className="w-full px-4 pb-16 md:pb-24"
+      className="mx-auto w-full max-w-[748px] px-4 pb-16 md:max-w-[900px] md:pb-24"
       style={{
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 500ms ease-out',
       }}
     >
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden rounded-[12px]">
         {/* Fade overlays */}
         <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
         <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-24 bg-gradient-to-l from-white to-transparent md:w-40" />
