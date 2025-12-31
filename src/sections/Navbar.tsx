@@ -12,8 +12,8 @@ interface NavbarProps {
 const NAV_ITEMS = [
   { id: 'overview', isLogo: true },
   { label: 'Services', id: 'services', isLogo: false },
-  { label: 'Work', id: 'use-cases', isLogo: false },
   { label: 'Process', id: 'how-we-work', isLogo: false },
+  { label: 'Work', id: 'use-cases', isLogo: false },
   { label: 'Contact', id: 'contact', isLogo: false },
 ] as const;
 
@@ -32,21 +32,27 @@ export function Navbar({ isScrolled, activeSection, isVisible, onNavigate }: Nav
         }}
       >
         <div
-          className="flex items-center gap-1 rounded-[12px] border border-black/8 bg-[#F8F8F8]/90 px-2 py-1.5 backdrop-blur-md"
+          className="flex items-center gap-1 rounded-[12px] border border-black/15 bg-white/70 px-2 py-1.5 backdrop-blur-md"
           style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}
         >
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map((item, index) => (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
               className={`flex items-center gap-2 rounded-[8px] px-4 py-2 text-[13px] transition-all ${
                 item.isLogo
-                  ? 'bg-white text-black shadow-sm'
+                  ? 'text-black'
                   : activeSection === item.id
                     ? 'bg-white/60 text-black'
                     : 'text-[#666666] hover:bg-white/40 hover:text-black'
               }`}
-              style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: '500' }}
+              style={{
+                fontFamily: 'Founders Grotesk, Inter',
+                fontWeight: '500',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(-8px)',
+                transition: `opacity 300ms ease-out ${index * 50}ms, transform 300ms ease-out ${index * 50}ms, background-color 150ms ease`,
+              }}
             >
               {item.isLogo ? <HenyoLogo className="h-[12px] w-auto" /> : item.label}
             </button>
@@ -65,7 +71,7 @@ export function Navbar({ isScrolled, activeSection, isVisible, onNavigate }: Nav
       >
         {/* Hamburger Button */}
         <button
-          className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#F8F8F8]/90 backdrop-blur-md"
+          className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-black/15 bg-white/70 backdrop-blur-md"
           onClick={() => setMenuOpen(true)}
           aria-label="Open menu"
           aria-expanded={menuOpen}

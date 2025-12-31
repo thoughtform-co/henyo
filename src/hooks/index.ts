@@ -6,4 +6,5 @@ export {
   useScrollSpy,
   useEntranceAnimation,
 } from './useIntersectionObserver';
+export { useSmoothScroll } from './useSmoothScroll';
 

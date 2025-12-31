@@ -1,52 +1,25 @@
-import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-  
-// Lazy load pages for code splitting
-const LandingPage = lazy(() =>
-  import('@/pages/LandingPage').then((module) => ({ default: module.LandingPage }))
-);
+import { useSmoothScroll } from '@/hooks';
+import { LandingPage } from '@/pages/LandingPage';
 
-// Future pages can be added here with lazy loading:
+// Future pages can be lazy loaded:
 // const WorkPage = lazy(() => import('@/pages/WorkPage'));
-// const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
-// const UseCasePage = lazy(() => import('@/pages/UseCasePage'));
-      
+
 /**
- * Loading fallback component
+ * Smooth scroll provider
  */
-function PageLoader() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-            <p
-        className="text-[#888888]"
-              style={{ 
-                fontFamily: "'Founders Grotesk', sans-serif",
-                fontWeight: 400,
-          fontSize: 'clamp(18px, 2.5vw, 24px)',
-            }}
-          >
-        Loading...
-            </p>
-    </div>
-  );
+function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  useSmoothScroll();
+  return <>{children}</>;
 }
 
 /**
  * App Shell with Router
- *
- * Currently renders only the landing page.
- * Future pages can be added as new routes with lazy loading.
- *
- * Example future routes:
- * - /work - Portfolio/case studies overview
- * - /services - Detailed services page
- * - /use-cases/:slug - Individual case study pages
- * - /contact - Contact page
  */
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
+      <SmoothScrollProvider>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           {/* Future routes:
@@ -55,7 +28,7 @@ export default function App() {
           <Route path="/use-cases/:slug" element={<UseCasePage />} />
           */}
         </Routes>
-      </Suspense>
+      </SmoothScrollProvider>
     </BrowserRouter>
   );
 }

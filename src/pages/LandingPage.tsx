@@ -13,13 +13,12 @@ import { HowWeWorkSlides } from '@/components/HowWeWorkSlides';
 import { ServicesSlides } from '@/components/ServicesSlides';
 import { useInterval, useScrollSpy } from '@/hooks';
 
-const SECTION_IDS = ['overview', 'how-we-work', 'services', 'use-cases'] as const;
+const SECTION_IDS = ['overview', 'services', 'how-we-work', 'use-cases'] as const;
 
 export function LandingPage() {
   // Page loader states
   const [loaderActive, setLoaderActive] = useState(true);
   const [loaderFadeOut, setLoaderFadeOut] = useState(false);
-  const [titleVisible, setTitleVisible] = useState(false);
   const [loaderComplete, setLoaderComplete] = useState(false);
 
   // Navigation states
@@ -59,20 +58,21 @@ export function LandingPage() {
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [selectedCaseIndex, setSelectedCaseIndex] = useState(0);
 
-  // Page loader sequence
+  // Page loader sequence - fast blur reveal
   useEffect(() => {
-    const showTitleTimer = setTimeout(() => setTitleVisible(true), 100);
-    const fadeTimer = setTimeout(() => setLoaderFadeOut(true), 3000);
+    // Start fade out almost immediately
+    const fadeTimer = setTimeout(() => setLoaderFadeOut(true), 800);
+    // Content becomes interactive at same time
     const contentTimer = setTimeout(() => {
       setLoaderComplete(true);
       setNavbarIntroVisible(true);
       setReelVisible(true);
       setCarouselVisible(true);
-    }, 3500);
-    const hideTimer = setTimeout(() => setLoaderActive(false), 3600);
+    }, 800);
+    // Remove loader from DOM after animation completes
+    const hideTimer = setTimeout(() => setLoaderActive(false), 1000);
 
     return () => {
-      clearTimeout(showTitleTimer);
       clearTimeout(fadeTimer);
       clearTimeout(contentTimer);
       clearTimeout(hideTimer);
@@ -260,21 +260,25 @@ export function LandingPage() {
   const handleNavigateCase = useCallback((index: number) => setSelectedCaseIndex(index), []);
 
   return (
-    <div className="relative min-h-screen bg-white">
-      {/* Page Loader */}
-      <PageLoader
-        isActive={loaderActive}
-        isFadingOut={loaderFadeOut}
-        titleVisible={titleVisible}
-      />
+    <>
+      {/* Page Loader - centered text overlay (outside blur) */}
+      <PageLoader isActive={loaderActive} isFadingOut={loaderFadeOut} />
 
-      {/* Navbar */}
+      {/* Navbar (outside blur, always crisp) */}
       <Navbar
         isScrolled={isScrolled}
         activeSection={activeSection || 'overview'}
         isVisible={navbarIntroVisible}
         onNavigate={scrollToSection}
       />
+
+      <div
+        className="relative min-h-screen bg-white"
+        style={{
+          filter: loaderFadeOut ? 'blur(0px)' : 'blur(16px)',
+          transition: 'filter 200ms ease-out',
+        }}
+      >
 
       {/* OVERVIEW Chapter */}
       <Hero reelVisible={reelVisible} />
@@ -286,29 +290,6 @@ export function LandingPage() {
 
       {/* Social Proof - Client Logos */}
       <SocialProof isVisible={carouselVisible} />
-
-      {/* HOW WE WORK Chapter */}
-      {loaderComplete && (
-        <section
-          ref={howWeWorkRef as React.RefObject<HTMLElement>}
-          id="how-we-work"
-          className="relative min-h-screen pt-24 pb-32 md:pt-32 md:pb-48"
-          style={{
-            opacity: howWeWorkVisible ? 1 : 0,
-            transform: howWeWorkVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 800ms ease-out, transform 800ms ease-out',
-          }}
-        >
-          <div className="w-full">
-            <HowWeWorkSlides
-              activeStep={activeStep}
-              onStepChange={handleStepChange}
-              onNext={handleNextStep}
-              onPrev={handlePrevStep}
-            />
-          </div>
-        </section>
-      )}
 
       {/* SERVICES Chapter */}
       {loaderComplete && (
@@ -333,6 +314,29 @@ export function LandingPage() {
         </section>
       )}
 
+      {/* HOW WE WORK Chapter */}
+      {loaderComplete && (
+        <section
+          ref={howWeWorkRef as React.RefObject<HTMLElement>}
+          id="how-we-work"
+          className="relative min-h-screen pt-24 pb-32 md:pt-32 md:pb-48"
+          style={{
+            opacity: howWeWorkVisible ? 1 : 0,
+            transform: howWeWorkVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 800ms ease-out, transform 800ms ease-out',
+          }}
+        >
+          <div className="w-full">
+            <HowWeWorkSlides
+              activeStep={activeStep}
+              onStepChange={handleStepChange}
+              onNext={handleNextStep}
+              onPrev={handlePrevStep}
+            />
+          </div>
+        </section>
+      )}
+
       {/* USE CASES Chapter */}
       {loaderComplete && (
         <section ref={useCasesRef as React.RefObject<HTMLElement>}>
@@ -348,12 +352,13 @@ export function LandingPage() {
       {loaderComplete && <Footer />}
 
       {/* Case Detail Overlay */}
-      <CaseOverlay
-        isOpen={overlayOpen}
-        selectedIndex={selectedCaseIndex}
-        onClose={handleCloseOverlay}
-        onNavigate={handleNavigateCase}
-      />
-    </div>
+        <CaseOverlay
+          isOpen={overlayOpen}
+          selectedIndex={selectedCaseIndex}
+          onClose={handleCloseOverlay}
+          onNavigate={handleNavigateCase}
+        />
+      </div>
+    </>
   );
 }

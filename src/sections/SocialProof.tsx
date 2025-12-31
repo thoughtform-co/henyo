@@ -17,6 +17,12 @@ export function SocialProof({ isVisible }: SocialProofProps) {
         transition: 'opacity 500ms ease-out',
       }}
     >
+      <p
+        className="mb-4 text-center text-[11px] uppercase tracking-[0.15em] text-[#999999] md:text-[12px]"
+        style={{ fontFamily: 'Founders Grotesk, Inter', fontWeight: 500 }}
+      >
+        Trusted by
+      </p>
       <div className="relative overflow-hidden rounded-[12px]">
         {/* Fade overlays */}
         <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
